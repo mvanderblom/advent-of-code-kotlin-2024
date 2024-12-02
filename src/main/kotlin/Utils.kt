@@ -43,12 +43,7 @@ fun <T> T.showMe(prefix: String? = null): T {
     return this
 }
 
-fun <T> List<T>.showMe(func: (input: T) -> Any): List<T> {
-    this.forEach {
-        println(func(it))
-    }
-    return this
-}
+fun <T> List<T>.showMe(func: (input: T) -> Any) = onEach { println(func(it)) }
 
 fun Int.toDayName(): String {
     require(this != 0) { "Please set the day number and run again" }
@@ -57,5 +52,4 @@ fun Int.toDayName(): String {
 
 fun List<String>.splitBy(separator: String = " "): List<List<Int>> = this.map{ it.split(separator).map{s -> s.toInt()} }
 fun <T> List<String>.splitBy(separator: String = " ", converter: Function<String, T>): List<List<T>> = this.map{ it.split(separator).map(converter::apply) }
-
-fun <T> List<T>.withoutElementAtIndex(index: Int) = this.subList(0, index) + this.subList(index + 1, this.size)
+fun <T> List<T>.withoutElementAt(index: Int) = this.subList(0, index) + this.subList(index + 1, this.size)
