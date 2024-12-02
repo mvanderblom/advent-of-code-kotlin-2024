@@ -2,24 +2,18 @@ package dev.vanderblom.aoc
 
 import kotlin.math.abs
 
-private fun List<Int>.isSafe(): Boolean = windowed(2)
-    .map { (a, b) -> b - a }
-    .let{ reportDeltas ->
-        (reportDeltas.all { it > 0 } || reportDeltas.all { it < 0 })
-                && reportDeltas.none { levelDelta -> abs(levelDelta) > 3 }
-    }
-
-private fun List<Int>.isSafePt2(): Boolean {
-    if(this.isSafe()) {
-        return true
-    }
-
-    return indices
-        .any { this.withoutElementAt(it).isSafe() }
-}
-
 fun main() {
     val dayName = 2.toDayName()
+
+    fun List<Int>.isSafe(): Boolean = windowed(2)
+        .map { (a, b) -> b - a }
+        .let{ reportDeltas ->
+            (reportDeltas.all { it > 0 } || reportDeltas.all { it < 0 })
+                    && reportDeltas.none { levelDelta -> abs(levelDelta) > 3 }
+        }
+
+    fun List<Int>.isSafePt2() = this.isSafe() || indices
+        .any { this.withoutElementAt(it).isSafe() }
 
     fun part1(input: List<String>): Int {
         return input
