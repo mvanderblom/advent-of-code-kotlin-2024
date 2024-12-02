@@ -2,13 +2,14 @@ package dev.vanderblom.aoc
 
 import java.io.File
 import java.math.BigInteger
+import java.nio.file.Path
 import java.security.MessageDigest
 
 /**
  * Reads lines from the given input txt file.
  */
 fun readInput(name: String): List<String> {
-    val file = File("src", "$name.txt")
+    val file = Path.of("src", "main", "resources", "input", "$name.txt").toFile()
     file.createNewFile()
     return file.readLines()
 }
