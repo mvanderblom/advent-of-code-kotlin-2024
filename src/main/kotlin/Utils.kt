@@ -1,9 +1,9 @@
 package dev.vanderblom.aoc
 
-import java.io.File
 import java.math.BigInteger
 import java.nio.file.Path
 import java.security.MessageDigest
+import java.util.function.Function
 
 /**
  * Reads lines from the given input txt file.
@@ -50,4 +50,12 @@ fun <T> List<T>.showMe(func: (input: T) -> Any): List<T> {
     return this
 }
 
-fun Int.toDayName(): String = "Day" + this.toString().padStart(2, '0')
+fun Int.toDayName(): String {
+    require(this != 0) { "Please set the day number and run again" }
+    return "Day" + this.toString().padStart(2, '0')
+}
+
+fun List<String>.splitBy(separator: String = " "): List<List<Int>> = this.map{ it.split(separator).map{s -> s.toInt()} }
+fun <T> List<String>.splitBy(separator: String = " ", converter: Function<String, T>): List<List<T>> = this.map{ it.split(separator).map(converter::apply) }
+
+fun <T> List<T>.withoutElementAtIndex(index: Int) = this.subList(0, index) + this.subList(index + 1, this.size)
