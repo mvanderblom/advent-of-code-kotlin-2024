@@ -1,6 +1,6 @@
-package dev.vanderblom.aoc.dev.vanderblom.aoc.impl
+package dev.vanderblom.aoc.days
 
-import dev.vanderblom.aoc.dev.vanderblom.aoc.AocDay
+import dev.vanderblom.aoc.AocDay
 
 class Day0 : AocDay(null, null, null, null) {
     override fun partOne(input: List<String>): Int {

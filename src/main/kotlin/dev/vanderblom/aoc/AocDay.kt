@@ -1,8 +1,4 @@
-package dev.vanderblom.aoc.dev.vanderblom.aoc
-
-import dev.vanderblom.aoc.dev.vanderblom.aoc.util.isEqualTo
-import dev.vanderblom.aoc.dev.vanderblom.aoc.util.readInput
-import dev.vanderblom.aoc.dev.vanderblom.aoc.util.toDayName
+package dev.vanderblom.aoc
 
 abstract class AocDay(
     private val p1Example: Int? = null,
@@ -15,7 +11,9 @@ abstract class AocDay(
 
     init {
         val simpleName = this::class.java.simpleName
-        val dayName = simpleName.replace("Day", "").toInt().toDayName()
+        val dayNumber = simpleName.replace("Day", "").toInt()
+        require(dayNumber != null) { "Please set the DayNumber" }
+        val dayName = dayNumber.toDayName()
         exampleInput = readInput("${dayName}-1-example")
         input = readInput("${dayName}-2-actual")
         println("Running $simpleName")

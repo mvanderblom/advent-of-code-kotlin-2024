@@ -1,4 +1,4 @@
-package dev.vanderblom.aoc.dev.vanderblom.aoc.util
+package dev.vanderblom.aoc
 
 import java.math.BigInteger
 import java.nio.file.Path

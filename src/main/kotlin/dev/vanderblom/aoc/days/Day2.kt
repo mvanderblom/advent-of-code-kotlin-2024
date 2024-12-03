@@ -1,8 +1,8 @@
-package dev.vanderblom.aoc.dev.vanderblom.aoc.impl
+package dev.vanderblom.aoc.days
 
-import dev.vanderblom.aoc.dev.vanderblom.aoc.AocDay
-import dev.vanderblom.aoc.dev.vanderblom.aoc.util.splitBy
-import dev.vanderblom.aoc.dev.vanderblom.aoc.util.withoutElementAt
+import dev.vanderblom.aoc.AocDay
+import dev.vanderblom.aoc.splitBy
+import dev.vanderblom.aoc.withoutElementAt
 import kotlin.math.abs
 
 class Day2 : AocDay(2,663,4,692) {

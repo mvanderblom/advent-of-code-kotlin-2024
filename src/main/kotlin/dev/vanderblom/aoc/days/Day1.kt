@@ -1,6 +1,6 @@
-package dev.vanderblom.aoc.dev.vanderblom.aoc.impl
+package dev.vanderblom.aoc.days
 
-import dev.vanderblom.aoc.dev.vanderblom.aoc.AocDay
+import dev.vanderblom.aoc.AocDay
 import kotlin.math.abs
 
 class Day1 : AocDay(11, 1651298, 31, 21306195) {
