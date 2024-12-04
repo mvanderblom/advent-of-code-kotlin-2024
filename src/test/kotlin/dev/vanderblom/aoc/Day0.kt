@@ -1,4 +1,4 @@
-package dev.vanderblom.aoc.days
+package dev.vanderblom.aoc
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order

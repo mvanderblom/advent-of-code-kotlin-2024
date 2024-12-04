@@ -1,5 +1,6 @@
 package dev.vanderblom.aoc.days
 
+import dev.vanderblom.aoc.AbstractDay
 import dev.vanderblom.aoc.splitBy
 import dev.vanderblom.aoc.withoutElementAt
 import org.assertj.core.api.Assertions.assertThat

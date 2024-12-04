@@ -1,5 +1,6 @@
 package dev.vanderblom.aoc.days
 
+import dev.vanderblom.aoc.AbstractDay
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
