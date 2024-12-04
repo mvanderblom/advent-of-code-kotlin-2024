@@ -14,6 +14,7 @@ fun readInput(name: String): List<String> {
 fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray()))
     .toString(16)
     .padStart(32, '0')
+fun String.withoutLast(n: Int) = this.substring(0, this.length - n)
 
 fun <T> T?.showMe(prefix: String? = null) = this.also {
     if (prefix != null) {
@@ -41,4 +42,9 @@ fun Int?.toDayName(): String {
 
 fun List<String>.splitBy(separator: String = " "): List<List<Int>> = this.map{ it.split(separator).map{s -> s.toInt()} }
 fun <T> List<String>.splitBy(separator: String = " ", converter: Function<String, T>): List<List<T>> = this.map{ it.split(separator).map(converter::apply) }
+operator fun List<String>.get(index: Pair<Int, Int>): Char {
+    val (row, col) = index
+    return this[row][col]
+}
+
 fun <T> List<T>.withoutElementAt(index: Int) = this.subList(0, index) + this.subList(index + 1, this.size)

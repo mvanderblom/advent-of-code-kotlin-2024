@@ -36,7 +36,7 @@ class Day1: AbstractDay() {
             .isEqualTo(21306195)
     }
 
-    fun partOne(input: List<String>): Int {
+    private fun partOne(input: List<String>): Int {
         val parsedInput = parse(input)
 
         val list1 = parsedInput.map { (l,_) -> l }.sorted()
@@ -46,7 +46,7 @@ class Day1: AbstractDay() {
             .sumOf { (l, r) -> abs(l - r) }
     }
 
-    fun partTwo(input: List<String>): Int {
+    private fun partTwo(input: List<String>): Int {
         val parsedInput = parse(input)
 
         val list1 = parsedInput.map { (l,_) -> l }

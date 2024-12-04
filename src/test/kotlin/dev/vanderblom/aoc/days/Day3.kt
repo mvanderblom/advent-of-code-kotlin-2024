@@ -38,13 +38,13 @@ class Day3: AbstractDay() {
             .isEqualTo(97529391)
     }
 
-    fun partOne(input: List<String>): Int {
+    private fun partOne(input: List<String>): Int {
         val completeInput = input.joinToString("")
         return mulRegex.findAll(completeInput)
             .sumOf { mul -> handleMul(mul.groups[1]!!.value) }
     }
 
-    fun partTwo(input: List<String>): Int {
+    private fun partTwo(input: List<String>): Int {
         val completeInput = input.joinToString("")
         val enabledByIndex = getEnabledByIndex(completeInput)
         return mulRegex.findAll(completeInput)

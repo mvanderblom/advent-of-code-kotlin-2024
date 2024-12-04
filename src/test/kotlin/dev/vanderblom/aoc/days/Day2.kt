@@ -38,13 +38,13 @@ class Day2: AbstractDay() {
             .isEqualTo(692)
     }
 
-    fun partOne(input: List<String>): Int {
+    private fun partOne(input: List<String>): Int {
         return input
             .splitBy(" ")
             .count { report -> report.isSafe() }
     }
 
-    fun partTwo(input: List<String>): Int {
+    private fun partTwo(input: List<String>): Int {
         return input
             .splitBy(" ")
             .count { it.isSafePt2() }
