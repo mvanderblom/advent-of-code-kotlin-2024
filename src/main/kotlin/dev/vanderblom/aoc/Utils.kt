@@ -15,30 +15,23 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .toString(16)
     .padStart(32, '0')
 
-infix fun Any.isEqualTo(expected: Any?): Boolean {
-    if (expected == null) {
-        error("Expectation not set... Actual was $this")
-    }
-
-    if (this != expected) {
-        error("Expected $expected, but got $this")
-    }
-    println(this)
-    return true
-}
-
-fun <T> T.showMe(prefix: String? = null) = prefix
-    ?.also {
+fun <T> T?.showMe(prefix: String? = null) = this.also {
+    if (prefix != null) {
         print(prefix)
         print(" ")
     }
-    .let {
-        println(this)
-        this
-    }
+    println(this)
+}
 
-fun <T> List<T>.showMe(prefix: String? = null, func: (input: T) -> Any) = onEach {
-    func(it).showMe(prefix)
+fun <T> List<T>.showMe(prefix: String? = null, func: (input: T) -> Any): List<T> {
+    return this
+        .also {
+            if (prefix != null) {
+                print(prefix)
+                print(" ")
+            }
+            println(it.map(func))
+        }
 }
 
 fun Int?.toDayName(): String {
