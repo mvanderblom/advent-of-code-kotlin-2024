@@ -1,29 +1,49 @@
 package dev.vanderblom.aoc.days
 
-import dev.vanderblom.aoc.AocDay
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 
-class Day3 : AocDay(161, 168539636, 48, 97529391) {
+class Day3: AbstractDay() {
     private val mulRegex = Regex("mul\\((\\d{1,3},\\d{1,3})\\)")
     private val doRegex = Regex("do\\(\\)")
     private val dontRegex = Regex("don't\\(\\)")
 
-    private fun handleMul(input: String): Int {
-        val (a,b) = input.split(",")
-            .map { it.toInt() }
-        return a*b
+    @Test
+    @Order(1)
+    fun `part one - example`() {
+        assertThat(partOne(exampleInput))
+            .isEqualTo(161)
     }
 
-    private fun findStartIndices(regex: Regex, input: String) = regex.findAll(input)
-        .map { it.range.first }
-        .toList()
+    @Test
+    @Order(2)
+    fun `part one - actual`() {
+        assertThat(partOne(actualInput))
+            .isEqualTo(168539636)
+    }
 
-    override fun partOne(input: List<String>): Int {
+    @Test
+    @Order(3)
+    fun `part two - example`() {
+        assertThat(partTwo(exampleInput))
+            .isEqualTo(48)
+    }
+
+    @Test
+    @Order(4)
+    fun `part two - actual`() {
+        assertThat(partTwo(actualInput))
+            .isEqualTo(97529391)
+    }
+
+    fun partOne(input: List<String>): Int {
         val completeInput = input.joinToString("")
         return mulRegex.findAll(completeInput)
-                    .sumOf { mul -> handleMul(mul.groups[1]!!.value) }
+            .sumOf { mul -> handleMul(mul.groups[1]!!.value) }
     }
 
-    override fun partTwo(input: List<String>): Int {
+    fun partTwo(input: List<String>): Int {
         val completeInput = input.joinToString("")
         val enabledByIndex = getEnabledByIndex(completeInput)
         return mulRegex.findAll(completeInput)
@@ -31,6 +51,12 @@ class Day3 : AocDay(161, 168539636, 48, 97529391) {
             .filter { enabledByIndex[it.range.first] }
             .map { it.value }
             .sumOf { handleMul(it) }
+    }
+
+    private fun handleMul(input: String): Int {
+        val (a,b) = input.split(",")
+            .map { it.toInt() }
+        return a*b
     }
 
     private fun getEnabledByIndex(completeInput: String): List<Boolean> {
@@ -48,11 +74,8 @@ class Day3 : AocDay(161, 168539636, 48, 97529391) {
             }
         return enabledByIndex
     }
-}
 
-fun main() {
-    val day = Day3()
-    day.runPartOne()
-    day.runPartTwo()
+    private fun findStartIndices(regex: Regex, input: String) = regex.findAll(input)
+        .map { it.range.first }
+        .toList()
 }
-

@@ -6,7 +6,7 @@ import java.security.MessageDigest
 import java.util.function.Function
 
 fun readInput(name: String): List<String> {
-    val file = Path.of("src", "main", "resources", "input", "$name.txt").toFile()
+    val file = Path.of("src", "test", "resources", "input", "$name.txt").toFile()
     file.createNewFile()
     return file.readLines()
 }
@@ -41,8 +41,8 @@ fun <T> List<T>.showMe(prefix: String? = null, func: (input: T) -> Any) = onEach
     func(it).showMe(prefix)
 }
 
-fun Int.toDayName(): String {
-    require(this != 0) { "Please set the day number and run again" }
+fun Int?.toDayName(): String {
+    require(this != null && this != 0) { "Please set the day number and run again" }
     return "Day" + this.toString().padStart(2, '0')
 }
 
