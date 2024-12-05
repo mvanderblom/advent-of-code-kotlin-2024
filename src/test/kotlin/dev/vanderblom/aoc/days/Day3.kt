@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
-class Day3: AbstractDay() {
+class Day3 : AbstractDay() {
     private val mulRegex = Regex("mul\\((\\d{1,3},\\d{1,3})\\)")
     private val doRegex = Regex("do\\(\\)")
     private val dontRegex = Regex("don't\\(\\)")

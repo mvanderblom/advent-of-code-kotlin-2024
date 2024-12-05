@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import kotlin.math.abs
 
-class Day1: AbstractDay() {
+class Day1 : AbstractDay() {
 
     @Test
     @Order(1)

@@ -1,14 +1,14 @@
 package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.splitBy
+import dev.vanderblom.aoc.splitValuesBy
 import dev.vanderblom.aoc.withoutElementAt
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import kotlin.math.abs
 
-class Day2: AbstractDay() {
+class Day2 : AbstractDay() {
 
     @Test
     @Order(1)
@@ -40,13 +40,13 @@ class Day2: AbstractDay() {
 
     private fun partOne(input: List<String>): Int {
         return input
-            .splitBy(" ")
+            .splitValuesBy(" ")
             .count { report -> report.isSafe() }
     }
 
     private fun partTwo(input: List<String>): Int {
         return input
-            .splitBy(" ")
+            .splitValuesBy(" ")
             .count { it.isSafePt2() }
     }
 

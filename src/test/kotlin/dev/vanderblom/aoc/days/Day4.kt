@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
-class Day4: AbstractDay() {
+class Day4 : AbstractDay() {
 
     @Test
     @Order(1)
