@@ -36,10 +36,10 @@ class Day0 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        return input.size
+        return 1
     }
 
     private fun partTwo(input: List<String>): Int {
-        return input.size
+        return 1
     }
 }

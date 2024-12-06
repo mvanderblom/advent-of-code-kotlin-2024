@@ -11,8 +11,13 @@ abstract class AbstractDay {
     init {
         val simpleName = this::class.java.simpleName
         val dayNumber = simpleName.replace("Day", "").toInt()
-        val dayName = dayNumber.toDayName()
-        exampleInput = readInput("${dayName}-1-example")
-        actualInput = readInput("${dayName}-2-actual")
+        if(dayNumber != 0) {
+            val dayName = dayNumber.toDayName()
+            exampleInput = readInput("${dayName}-1-example")
+            actualInput = readInput("${dayName}-2-actual")
+        } else {
+            exampleInput = emptyList()
+            actualInput = emptyList()
+        }
     }
 }

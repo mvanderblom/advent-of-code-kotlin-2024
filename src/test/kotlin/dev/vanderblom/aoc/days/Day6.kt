@@ -81,7 +81,7 @@ class Day6 : AbstractDay() {
                 null -> return true
             }
 
-            if(path.size >= (grid.size)) {
+            if(path.size >= grid.size) {
                 return false
             }
         }
