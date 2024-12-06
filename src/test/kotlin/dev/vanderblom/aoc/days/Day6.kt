@@ -58,6 +58,7 @@ class Day6 : AbstractDay() {
 
         val obstructionCoords = guard.path
             .filter { it != guardStartPos }
+            .distinct()
 
         return obstructionCoords
             .count { obstructionCoord ->
