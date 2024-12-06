@@ -44,20 +44,20 @@ class Day5 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        val(orderByFirst, printInstructions) = parse(input)
+        val(printOrderByPage, printInstructions) = parse(input)
 
         return printInstructions
-            .filter { hasCorrectOrder(orderByFirst, it) }
+            .filter { hasCorrectOrder(printOrderByPage, it) }
             .sumOf { it.middle() }
     }
 
 
     private fun partTwo(input: List<String>): Int {
-        val(orderByFirst, printInstructions) = parse(input)
+        val(printOrderByPage, printInstructions) = parse(input)
 
         return printInstructions
-            .filter { !hasCorrectOrder(orderByFirst, it) }
-            .map { sort(orderByFirst, it) }
+            .filter { !hasCorrectOrder(printOrderByPage, it) }
+            .map { sort(printOrderByPage, it) }
             .sumOf { it.middle() }
     }
 
@@ -65,28 +65,28 @@ class Day5 : AbstractDay() {
         return input.splitOnce("")
             .let { (rawOrdering, rawPrintInstructions) ->
 
-                val orderByFirst = rawOrdering
+                val printOrderByPage = rawOrdering
                     .splitValuesBy("|")
                     .groupBy({ it[0] }, { it[1] })
                     .mapValues { (_,v)-> v.toSet() }
 
-                orderByFirst to rawPrintInstructions.splitValuesBy(",")
+                printOrderByPage to rawPrintInstructions.splitValuesBy(",")
             }
     }
 
-    private fun sort(orderByFirst: Map<Int, Set<Int>>, printInstruction: List<Int>): List<Int> {
+    private fun sort(printOrderByPage: Map<Int, Set<Int>>, printInstruction: List<Int>): List<Int> {
         return printInstruction.sortedWith { p1: Int, p2: Int ->
-            orderByFirst[p1]
+            printOrderByPage[p1]
                 ?.let {if (p2 in it) { -1 } else { 1 } }
                 ?: 0
         }.showMe()
     }
 
-    private fun hasCorrectOrder(orderByFirst: Map<Int, Set<Int>>, printInstruction: List<Int>): Boolean {
+    private fun hasCorrectOrder(printOrderByPage: Map<Int, Set<Int>>, printInstruction: List<Int>): Boolean {
         return printInstruction
             .firstOrNullIndexed { pageIndex, page ->
                 val laterPages = printInstruction.listAfter(pageIndex + 1)
-                val pagesThatMustBeLater = orderByFirst[page] ?: emptySet()
+                val pagesThatMustBeLater = printOrderByPage[page] ?: emptySet()
                 laterPages.isNotEmpty() && pagesThatMustBeLater not { containsAll(laterPages) }
             }.toBoolean().not()
     }
