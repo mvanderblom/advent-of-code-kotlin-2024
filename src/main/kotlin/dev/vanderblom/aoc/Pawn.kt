@@ -10,7 +10,6 @@ data class Pawn(var row: Int, var col: Int, var orientation: Orientation = Orien
 
     fun turn(direction: Direction): Pawn {
         orientation = orientation.look(direction)
-        path.add(position)
         return this
     }
 
