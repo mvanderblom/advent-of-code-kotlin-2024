@@ -1,7 +1,7 @@
 package dev.vanderblom.aoc
 
 data class Surrounding(
-    val index: Pair<Int, Int>,
+    val index: Coord,
     val char: Char,
     val top: String?,
     val right: String?,
@@ -20,7 +20,7 @@ data class Surrounding(
 
     companion object {
         fun of(
-            index: Pair<Int, Int>,
+            index: Coord,
             char: Char,
             top: List<Char>?,
             right: List<Char>?,

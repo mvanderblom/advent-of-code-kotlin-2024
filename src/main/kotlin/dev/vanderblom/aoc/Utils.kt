@@ -16,22 +16,18 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .padStart(32, '0')
 fun String.withoutLast(n: Int) = this.substring(0, this.length - n)
 
-fun <T> T.showMe(prefix: String? = null) = this.also {
-    if (prefix != null) {
-        print(prefix)
-        print(" ")
-    }
-    println(this)
-}
-
-fun <T> List<T>.showMe(prefix: String? = null, func: (input: T) -> Any): List<T> {
+fun <T> T.showMe(prefix: String? = null, func: ((input: T) -> Any)? = null): T {
     return this
         .also {
             if (prefix != null) {
                 print(prefix)
                 print(" ")
             }
-            println(it.map(func))
+            if(func != null) {
+                println(func(it))
+            } else {
+                println(it)
+            }
         }
 }
 
@@ -42,7 +38,7 @@ fun Int?.toDayName(): String {
 
 fun List<String>.splitValuesBy(separator: String = " "): List<List<Int>> = this.map{ it.split(separator).map{ s -> s.toInt()} }
 fun <T> List<String>.splitValuesBy(separator: String = " ", converter: Function<String, T>): List<List<T>> = this.map{ it.split(separator).map(converter::apply) }
-operator fun List<String>.get(index: Pair<Int, Int>): Char {
+fun List<String>.look(index: Pair<Int, Int>): Char {
     val (row, col) = index
     return this[row][col]
 }

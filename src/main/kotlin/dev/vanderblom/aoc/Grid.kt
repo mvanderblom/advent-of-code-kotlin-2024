@@ -2,22 +2,31 @@ package dev.vanderblom.aoc
 
 class Grid(private val input: List<String>) {
 
-    private val width: Int = input.map { it.length }.distinct().single()
-    private val height: Int = input.size
+    val width: Int = input.map { it.length }.distinct().single()
+    val height: Int = input.size
+    val size: Int get() = width * height
 
-    fun findAll(needle: Char): List<Pair<Int, Int>> {
+    fun findAll(needle: Char): List<Coord> {
         return input.flatMapIndexed { lineIndex, line ->
             line
                 .mapIndexedNotNull { charIndex, char ->
                     if(char == needle)
-                        lineIndex to charIndex
+                        Coord(lineIndex, charIndex)
                     else
                         null
                 }
         }
     }
 
-    fun getSurrounding(index: Pair<Int, Int>, n: Int): Surrounding {
+    fun findSingle(needle: Char): Coord {
+        return findAll(needle).single()
+    }
+
+    operator fun get(coord: Coord): Char? {
+        return input[coord]
+    }
+
+    fun getSurrounding(index: Coord, n: Int): Surrounding {
         val (row, col) = index
 
         require(row >= 0 && col >= 0) { "row and col should be greater than zero" }
@@ -32,7 +41,7 @@ class Grid(private val input: List<String>) {
         val indices = (0..n)
         return Surrounding.of(
             index,
-            input[index],
+            input[index]!!,
             if (canLookUp) indices.map { input[row - it][col] } else null,
             if (canLookRight) indices.map { input[row][col + it] } else null,
             if (canLookDown) indices.map { input[row + it][col] } else null,
@@ -42,6 +51,29 @@ class Grid(private val input: List<String>) {
             if (canLookDown && canLookLeft) indices.map { input[row + it][col - it] } else null,
             if (canLookUp && canLookLeft) indices.map { input[row - it][col - it] } else null
         )
+    }
+
+    private operator fun List<String>.get(coord: Coord): Char? {
+        if(coord.row < 0 || coord.col < 0 || coord.row >= height || coord.col >= width) return null
+        return this[coord.row][coord.col]
+    }
+
+    fun withCharAtReplacedBy(coord: Coord, char: Char): Grid {
+        return Grid(
+            input.mapIndexed { rowIndex, row ->
+                if(rowIndex == coord.row)
+                    row.replaceRange(coord.col..coord.col, char.toString())
+                else
+                    row
+            }
+        )
+    }
+
+    fun showMe(): Grid {
+        repeat(width) { print("-") }
+        println()
+        input.forEach(::println)
+        return this
     }
 }
 

@@ -34,7 +34,7 @@ class GridTest {
 
     @Test
     fun `surrounding - all looks from center outwards in a clockwise pattern`() {
-        val surrounding = testGrid.getSurrounding(1 to 1, 1)
+        val surrounding = testGrid.getSurrounding(Coord(1,1), 1)
         assertThat(surrounding.all())
             .hasSize(8)
             .containsExactly("XO", "XX", "XO", "XX", "XO", "XX", "XO", "XX")
@@ -45,7 +45,7 @@ class GridTest {
 
     @Test
     fun `surrounding - topleft`() {
-        val surrounding = testGrid.getSurrounding(0 to 0, 1)
+        val surrounding = testGrid.getSurrounding(Coord(0, 0), 1)
         assertThat(surrounding.all())
             .hasSize(3)
             .containsExactly("XO", "XX", "XO")
@@ -56,7 +56,7 @@ class GridTest {
 
     @Test
     fun `surrounding - topRight`() {
-        val surrounding = testGrid.getSurrounding(0 to 2, 1)
+        val surrounding = testGrid.getSurrounding(Coord(0, 2), 1)
         assertThat(surrounding.all())
             .hasSize(3)
             .containsExactly("XO", "XX", "XO")
@@ -67,7 +67,7 @@ class GridTest {
 
     @Test
     fun `surrounding - bottomRight`() {
-        val surrounding = testGrid.getSurrounding(2 to 2, 1)
+        val surrounding = testGrid.getSurrounding(Coord(2, 2), 1)
         assertThat(surrounding.all())
             .hasSize(3)
             .containsExactlyInAnyOrder("XO", "XX", "XO")
@@ -78,7 +78,7 @@ class GridTest {
 
     @Test
     fun `surrounding - bottomLeft`() {
-        val surrounding = testGrid.getSurrounding(2 to 0, 1)
+        val surrounding = testGrid.getSurrounding(Coord(2, 0), 1)
         assertThat(surrounding.all())
             .hasSize(3)
             .containsExactlyInAnyOrder("XO", "XX", "XO")
@@ -96,7 +96,7 @@ class GridTest {
             ".U.L.",
             "L...O",
         ))
-        val surrounding = testGrid.getSurrounding(2 to 2, 2)
+        val surrounding = testGrid.getSurrounding(Coord(2, 2), 2)
         assertThat(surrounding.diagonals())
             .hasSize(2)
             .containsExactly("HELLO", "LULLO")
@@ -116,10 +116,17 @@ class GridTest {
     @Test
     fun `getSurounding for invalid index throws`() {
         assertThrows<IllegalArgumentException> {
-            testGrid.getSurrounding(3 to 3, 1)
+            testGrid.getSurrounding(Coord(3, 3), 1)
         }
         assertThrows<IllegalArgumentException> {
-            testGrid.getSurrounding(2 to 3, 1)
+            testGrid.getSurrounding(Coord(2, 3), 1)
         }
+    }
+
+    @Test
+    fun replaceCharAt() {
+        testGrid
+            .withCharAtReplacedBy(Coord(0,0), 'A')
+            .showMe()
     }
 }
