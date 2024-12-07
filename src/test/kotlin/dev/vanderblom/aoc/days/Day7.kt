@@ -1,6 +1,7 @@
 package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
+import dev.vanderblom.aoc.prepend
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -37,15 +38,11 @@ class Day7 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Long {
-        return input.map(::parseLine)
-            .filter { (operands, outcome) -> isSolvable(operands, outcome) }
-            .sumOf { (_, outcome) -> outcome }
+        return solve(input, Solver(listOf(Operator.ADD, Operator.MULTIPLY)))
     }
 
     private fun partTwo(input: List<String>): Long {
-        return input.map(::parseLine)
-            .filter { (operands, outcome) -> isSolvable(operands, outcome, true) }
-            .sumOf { (_, outcome) -> outcome }
+        return solve(input, Solver(listOf(Operator.ADD, Operator.MULTIPLY, Operator.CONCAT)))
     }
 
     private fun parseLine(equationStr: String): Pair<List<Long>, Long> {
@@ -54,36 +51,31 @@ class Day7 : AbstractDay() {
         return operands to outcome.toLong()
     }
 
-    private fun isSolvable(operands: List<Long>, result: Long, includeConcat: Boolean = false): Boolean {
+    private fun solve(input: List<String>, solver: Solver) = input
+        .map { parseLine(it) }
+        .filter { (operands, outcome) -> solver.isSolvable(operands, outcome) }
+        .sumOf { (_, outcome) -> outcome }
+}
 
-        if (operands.size == 1) return operands[0] == result
+class Solver(private val operators: List<Operator>) {
+    fun isSolvable(operands: List<Long>, outcome: Long): Boolean {
+        if (operands.size == 1) return operands[0] == outcome
 
         val remainingOperands = operands.subList(2, operands.size)
 
-        val multiplicationResult = operands[0] * operands[1]
-        if (multiplicationResult <= result
-            && isSolvable(remainingOperands.prepend(multiplicationResult), result, includeConcat)) {
-            return true
-        }
-
-        val plusResult = operands[0] + operands[1]
-        if (plusResult <= result
-            && isSolvable(remainingOperands.prepend(plusResult), result, includeConcat)) {
-            return true
-        }
-
-        if(includeConcat) {
-            val concatResult = (operands[0].toString() + operands[1].toString()).toLong()
-            if(concatResult <= result
-                && isSolvable(remainingOperands.prepend(concatResult), result, true)) {
+        operators.forEach {
+            val operatorResult = it.execute(operands[0], operands[1])
+            if (operatorResult <= outcome
+                && isSolvable(remainingOperands.prepend(operatorResult), outcome)) {
                 return true
             }
         }
-
         return false
     }
+}
 
-    private inline fun <reified T> List<T>.prepend(item: T): List<T> {
-        return listOf(item, *this.toTypedArray())
-    }
+enum class Operator(val execute: (Long, Long)-> Long) {
+    ADD({ a, b -> a + b }),
+    MULTIPLY({ a, b -> a * b }),
+    CONCAT({ a, b -> "$a$b".toLong() }),
 }
