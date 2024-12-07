@@ -61,8 +61,6 @@ fun <T> List<T>.listAfter(index: Int) = takeIf { index <= lastIndex }
     ?.let { subList(index, size) }
     ?: emptyList()
 
-inline fun <reified T> List<T>.prepend(item: T): List<T> = listOf(item, *this.toTypedArray())
-
 infix fun <T> T.not(block: T.() -> Boolean) = block(this).not()
 
 fun <T> T?.toBoolean() = this?.let { true } ?: false

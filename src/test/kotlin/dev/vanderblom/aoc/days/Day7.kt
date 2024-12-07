@@ -1,7 +1,6 @@
 package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.prepend
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -38,35 +37,35 @@ class Day7 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Long {
-        return solve(input, Solver(listOf(Operator.ADD, Operator.MULTIPLY)))
+        return solve(input, Solver(listOf(Operator.MULTIPLY, Operator.ADD)))
     }
 
     private fun partTwo(input: List<String>): Long {
         return solve(input, Solver(listOf(Operator.ADD, Operator.MULTIPLY, Operator.CONCAT)))
     }
 
+    private fun solve(input: List<String>, solver: Solver) = input
+        .map { parseLine(it) }
+        .filter { (operands, outcome) -> solver.isSolvable(operands, outcome) }
+        .sumOf { (_, outcome) -> outcome }
+
     private fun parseLine(equationStr: String): Pair<List<Long>, Long> {
         val (outcome, operandsString) = equationStr.split(": ")
         val operands = operandsString.split(" ").map { it.toLong() }
         return operands to outcome.toLong()
     }
-
-    private fun solve(input: List<String>, solver: Solver) = input
-        .map { parseLine(it) }
-        .filter { (operands, outcome) -> solver.isSolvable(operands, outcome) }
-        .sumOf { (_, outcome) -> outcome }
 }
 
 class Solver(private val operators: List<Operator>) {
-    fun isSolvable(operands: List<Long>, outcome: Long): Boolean {
-        if (operands.size == 1) return operands[0] == outcome
+    fun isSolvable(operands: List<Long>, outcome: Long, acc: Long = 0): Boolean {
+        if (operands.isEmpty()) return acc == outcome
 
-        val remainingOperands = operands.subList(2, operands.size)
+        val remainingOperands = operands.subList(1, operands.size)
 
         operators.forEach {
-            val operatorResult = it.execute(operands[0], operands[1])
+            val operatorResult = it.execute(acc, operands[0])
             if (operatorResult <= outcome
-                && isSolvable(remainingOperands.prepend(operatorResult), outcome)) {
+                && isSolvable(remainingOperands, outcome, operatorResult)) {
                 return true
             }
         }
