@@ -2,7 +2,6 @@ package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
 import dev.vanderblom.aoc.Grid
-import dev.vanderblom.aoc.showMe
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -38,88 +37,62 @@ class Day8 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        val grid = Grid(input)
-
-        val resonantFreqs= grid
-            .coordsByChar()
-            .filter { (k, _) -> k.isLetterOrDigit() }
-            .flatMap {(char, coordsPerChar)->
-                char.showMe("Finding resonantFreqs for ")
-                coordsPerChar.flatMap { coordA ->
-                    coordsPerChar
-                        .filter { it != coordA }
-                        .flatMap { coordB ->
-                            coordA.showMe("coordA")
-                            coordB.showMe("coordB")
-
-                            val delta = (coordA - coordB)
-                                .showMe("delta")
-
-                            listOf(coordA + delta, coordB - delta)
-                                .showMe("resonantFreqs for char $char")
-                        }
-                }
-            }
-            .toSet()
-            .filter { it.isIn(grid) }
-            .showMe("unique resonantFreqs")
-
-        return resonantFreqs.count()
-    }
-
-    private fun partTwo(input: List<String>): Int {
-        val grid = Grid(input)
-
-        val resonantFreqs= grid
+        return Grid(input)
             .coordsByChar()
             .asSequence()
             .filter { (k, _) -> k.isLetterOrDigit() }
-            .filter { (_, coordsPerChar) -> coordsPerChar.size > 1 }
-            .flatMap {(char, coordsPerChar)->
-                char.showMe("Finding resonantFreqs for ")
+            .flatMap { (char, coordsPerChar) ->
                 coordsPerChar.flatMap { coordA ->
                     coordsPerChar
                         .filter { it != coordA }
                         .flatMap { coordB ->
-                            coordA.showMe("coordA")
-                            coordB.showMe("coordB")
-
                             val delta = (coordA - coordB)
-                                .showMe("delta")
+                            setOf(coordA + delta, coordB - delta)
+                        }
+                }
+            }
+            .distinct()
+            .count { it.isWithIn(Grid(input)) }
+    }
 
+    private fun partTwo(input: List<String>): Int {
+        return Grid(input)
+            .coordsByChar()
+            .asSequence()
+            .filter { (k, _) -> k.isLetterOrDigit() }
+            .flatMap { (char, coordsPerChar) ->
+                coordsPerChar.flatMap { coordA ->
+                    coordsPerChar
+                        .filter { it != coordA }
+                        .flatMap { coordB ->
+                            val delta = (coordA - coordB)
 
-                            val harmonics = mutableListOf(coordA, coordB)
+                            val harmonics = mutableSetOf(coordA, coordB)
 
                             var i = 1
-                            while (true){
-                                val newHarmonic = coordA + (delta*i++)
-                                if(!newHarmonic.isIn(grid)){
-                                    newHarmonic.showMe("newHarmonic outside of grid")
+                            while (true) {
+                                val newHarmonic = coordA + (delta * i++)
+                                if (!newHarmonic.isWithIn(Grid(input))) {
                                     break;
                                 }
 
-                                newHarmonic.showMe("newHarmonic")
                                 harmonics.add(newHarmonic)
                             }
+
                             var j = 1
-                            while (true){
-                                val newHarmonic = coordB - (delta*j++)
-                                if(!newHarmonic.isIn(grid)){
+                            while (true) {
+                                val newHarmonic = coordB - (delta * j++)
+                                if (!newHarmonic.isWithIn(Grid(input))) {
                                     break;
                                 }
                                 harmonics.add(newHarmonic)
                             }
 
                             harmonics
-                                .showMe("resonantFreqs for char $char")
                         }
                 }
             }
-            .toSet()
-            .filter { it.isIn(grid) }
-            .toList()
-            .showMe("unique resonantFreqs")
-
-        return resonantFreqs.count()
+            .distinct()
+            .count()
     }
 }
