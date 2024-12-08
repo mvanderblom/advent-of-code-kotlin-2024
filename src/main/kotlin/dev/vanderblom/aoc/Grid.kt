@@ -69,6 +69,15 @@ class Grid(private val input: List<String>) {
         )
     }
 
+    fun coordsByChar() = input
+            .flatMapIndexed { lineIndex, line ->
+                line
+                    .mapIndexed { charIndex, char ->
+                            char to Coord(lineIndex, charIndex)
+                    }
+            }
+            .groupBy ({ it.first }, { it.second } )
+
     fun showMe(): Grid {
         repeat(width) { print("-") }
         println()
