@@ -61,12 +61,6 @@ fun <T> List<T>.listAfter(index: Int) = takeIf { index <= lastIndex }
     ?.let { subList(index, size) }
     ?: emptyList()
 
-fun <T> MutableList<T>.replaceAt(index: Int, n: Int=1, newItems: List<T>) {
-    val tempList = this.subList(0, index) + newItems + this.subList(index + n, this.size)
-    this.clear()
-    this.addAll(tempList)
-}
-
 infix fun <T> T.not(block: T.() -> Boolean) = block(this).not()
 
 fun <T> T?.toBoolean() = this?.let { true } ?: false
