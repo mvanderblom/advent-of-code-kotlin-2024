@@ -62,16 +62,16 @@ class Day10 : AbstractDay() {
         val surrounding = grid.getSurrounding(pawn.position,1, false)
         val nextValue = surrounding.char.toString().toLong()+1
         if(nextValue == (surrounding.top?.toLong() ?: 0)) {
-            walk(pawn.copy().move(Orientation.NORTH), grid, acc)
+            walk(pawn.clone().move(Orientation.NORTH), grid, acc)
         }
         if(nextValue == (surrounding.right?.toLong() ?: 0)) {
-            walk(pawn.copy().move(Orientation.EAST), grid, acc)
+            walk(pawn.clone().move(Orientation.EAST), grid, acc)
         }
         if(nextValue == (surrounding.bottom?.toLong() ?: 0)) {
-            walk(pawn.copy().move(Orientation.SOUTH), grid, acc)
+            walk(pawn.clone().move(Orientation.SOUTH), grid, acc)
         }
         if(nextValue == (surrounding.left?.toLong() ?: 0)) {
-            walk(pawn.copy().move(Orientation.WEST), grid, acc)
+            walk(pawn.clone().move(Orientation.WEST), grid, acc)
         }
 
     }

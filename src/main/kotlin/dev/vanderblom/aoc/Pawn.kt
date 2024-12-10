@@ -27,12 +27,20 @@ data class Pawn(var row: Int, var col: Int, var orientation: Orientation = Orien
     }
 
     fun look(direction: Direction, n: Int = 1): Coord {
-        return this.copy().move(direction, n).position
+        val orientation = orientation.look(direction)
+        return when (orientation) {
+            Orientation.NORTH -> Coord(row - n, col)
+            Orientation.EAST -> Coord(row, col + n)
+            Orientation.SOUTH -> Coord(row + n, col)
+            Orientation.WEST -> Coord(row,col - n)
+        }
     }
 
     fun isOn(grid: Grid) = col < grid.width && row < grid.height && col >= 0 && row >= 0
 
-    fun copy() = Pawn(row, col, orientation, path.toMutableList())
+    fun clone(): Pawn {
+        return Pawn(row, col, orientation, path.toMutableList())
+    }
 
     companion object {
         fun of(row: Int, col: Int, orientation: Orientation = Orientation.NORTH) = Pawn(row, col, orientation, mutableListOf(Coord(row, col)))
