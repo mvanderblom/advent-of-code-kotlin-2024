@@ -43,7 +43,7 @@ class Day6 : AbstractDay() {
     private fun partOne(input: List<String>): Int {
         val grid = Grid(input)
 
-        val guard = Pawn(grid.findSingle(GUARD_START_CHAR))
+        val guard = Pawn.of(grid.findSingle(GUARD_START_CHAR))
         guard.canWalkOffGrid(grid)
 
         return guard.path.distinct().size
@@ -53,7 +53,7 @@ class Day6 : AbstractDay() {
         val grid = Grid(input)
         val guardStartPos = grid.findSingle(GUARD_START_CHAR)
 
-        val guard = Pawn(guardStartPos)
+        val guard = Pawn.of(guardStartPos)
         guard.canWalkOffGrid(grid)
 
         val obstructionCoords = guard.path
@@ -63,7 +63,7 @@ class Day6 : AbstractDay() {
         return obstructionCoords
             .count { obstructionCoord ->
                 val gridWithObstruction = grid.withCharAtReplacedBy(obstructionCoord, 'O')
-                val newPawn = Pawn(guardStartPos)
+                val newPawn = Pawn.of(guardStartPos)
                 !newPawn.canWalkOffGrid(gridWithObstruction)
             }
     }

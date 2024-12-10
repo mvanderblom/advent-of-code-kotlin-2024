@@ -18,6 +18,19 @@ data class Surrounding(
         if(bottomLeft != null || topRight != null) (bottomLeft?.reversed()?.withoutLast(1) ?: "") + char + (topRight?.substring(1) ?: "") else null,
     )
 
+    fun charAtEquals(orientation: Orientation, char: Char): Boolean {
+        return char == when(orientation) {
+            Orientation.NORTH -> top
+            Orientation.EAST -> right
+            Orientation.SOUTH -> bottom
+            Orientation.WEST -> left
+        }?.let { it[0] }
+    }
+
+    fun getPlusPattern() = listOfNotNull(top, right, bottom, left)
+
+    fun getXPattern() = listOfNotNull(topRight, bottomRight, bottomLeft, topLeft)
+
     companion object {
         fun of(
             index: Coord,

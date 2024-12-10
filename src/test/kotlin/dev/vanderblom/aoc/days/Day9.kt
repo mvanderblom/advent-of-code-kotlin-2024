@@ -1,6 +1,7 @@
 package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
+import dev.vanderblom.aoc.replaceAt
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -56,10 +57,10 @@ fun List<String>.checksum() = this
 
 
 fun List<Block>.print() {
-    println(toLine().joinToString(""))
+    println(toStrings().joinToString(""))
 }
 
-fun List<Block>.toLine() = flatMap { block ->
+fun List<Block>.toStrings() = flatMap { block ->
     (1..block.size).map {
         if (block.type == Block.Type.FILE) {
             block.id.toString()
@@ -72,10 +73,62 @@ fun List<Block>.toLine() = flatMap { block ->
 fun List<Block>.size() = this.sumOf { it.size }
 
 
+class Line(initialBlocks: List<Block>) {
+    val blocks = initialBlocks.toMutableList()
+
+    fun getFilesRightToLeft() = blocks
+        .filter { it.type == Block.Type.FILE }
+        .reversed()
+
+    fun setEmptySpace(index: Int, lookBackToIndex: Int, size: Long) {
+        var newEmptyBlockSize = size
+        var newEmptyBlockStartIndex = index
+        var replaceNItems = 1
+
+        blocks.getOrNull(index - 1)
+            ?.takeIf { it.type == Block.Type.EMPTY_SPACE && (index - 1) > lookBackToIndex }
+            ?.also { blockBefore ->
+                newEmptyBlockSize += blockBefore.size
+                newEmptyBlockStartIndex -= 1
+                replaceNItems++
+            }
+        blocks.getOrNull(index + 1)
+            ?.takeIf { it.type == Block.Type.EMPTY_SPACE }
+            ?.also { blockAfter ->
+                newEmptyBlockSize += blockAfter.size
+                replaceNItems++
+            }
+        blocks.replaceAt(
+            newEmptyBlockStartIndex,
+            replaceNItems,
+            listOf(Block(null, newEmptyBlockSize, Block.Type.EMPTY_SPACE))
+        )
+
+    }
+
+    fun setBlocks(index: Int, newBlocks: List<Block>) {
+        blocks.replaceAt(index, 1, newBlocks)
+    }
+
+    fun tryMoveBlock(oldIndex: Int) {
+        val block = blocks[oldIndex]
+        blocks
+            .take(oldIndex)
+            .withIndex()
+            .firstOrNull { (_, possibleTargetBlock) -> block.fitsIn(possibleTargetBlock) }
+            ?.also { (targetIndex, targetBlock) ->
+                setEmptySpace(oldIndex, targetIndex, block.size)
+                setBlocks(targetIndex, targetBlock.replaceWith(block))
+            }
+    }
+
+    fun toStrings() = blocks.toStrings()
+}
+
 class DiskMap(val blocks: List<Block>) {
     fun compactBlockLevel(): List<String> {
-        val line = blocks.toLine()
-        val dataBlocks = blocks.toLine()
+        val line = blocks.toStrings()
+        val dataBlocks = blocks.toStrings()
             .filter { it != "." }
             .toMutableList()
         val dataBlockCount = dataBlocks.size
@@ -87,64 +140,12 @@ class DiskMap(val blocks: List<Block>) {
         }
     }
 
-    fun <T> MutableList<T>.replaceAt(index: Int, n: Int=1, vararg newItems: T) {
-        val tempList = this.subList(0, index) + newItems + this.subList(index + n, this.size)
-        this.clear()
-        this.addAll(tempList)
-    }
-
     fun compactFileLevel(): List<String> {
-        val dataBlocksReversed = blocks
-            .filter { it.type == Block.Type.FILE}
-            .reversed()
-            .toMutableList()
-
-        val processedBlocks = mutableSetOf<Block>()
-
-        val target = blocks.toMutableList()
-        dataBlocksReversed.forEach{ blockToPlace ->
-            if(processedBlocks.contains(blockToPlace)) return@forEach
-            processedBlocks.add(blockToPlace)
-
-            val oldIndex = target.indexOf(blockToPlace)
-
-            target
-                .take(oldIndex+1)
-                .mapIndexed { index, targetBlock -> index to targetBlock }
-                .firstOrNull{ (_, targetBlock) -> targetBlock.type == Block.Type.EMPTY_SPACE && targetBlock.size >= blockToPlace.size }
-                ?.also {(targetIndex, targetBlock) ->
-
-                    var newEmptyBlockSize = blockToPlace.size
-                    var newEmptyBlockStartIndex = oldIndex
-                    var replaceNItems = 1
-                    target.getOrNull(oldIndex - 1)
-                        ?.takeIf { it.type == Block.Type.EMPTY_SPACE && (oldIndex-1) != targetIndex }
-                        ?.also { blockBefore ->
-                            newEmptyBlockSize += blockBefore.size
-                            newEmptyBlockStartIndex -= 1
-                            replaceNItems++
-                        }
-                    target.getOrNull(oldIndex + 1)
-                        ?.takeIf { it.type == Block.Type.EMPTY_SPACE }
-                        ?.also { blockAfter ->
-                            newEmptyBlockSize += blockAfter.size
-                            replaceNItems++
-                        }
-                    target.replaceAt(newEmptyBlockStartIndex, replaceNItems, Block(null, newEmptyBlockSize, Block.Type.EMPTY_SPACE))
-
-                    if(targetBlock.size == blockToPlace.size) {
-                        target.replaceAt(targetIndex, 1, blockToPlace)
-                    } else {
-                        target.replaceAt(
-                            targetIndex,
-                            1,
-                            blockToPlace,
-                            targetBlock.copy(size = targetBlock.size - blockToPlace.size)
-                        )
-                    }
-                }
+        val line = Line(blocks)
+        line.getFilesRightToLeft().indices.forEach { index ->
+            line.tryMoveBlock(index)
         }
-        return target.toLine()
+        return line.toStrings()
     }
 
     companion object {
@@ -166,6 +167,15 @@ class DiskMap(val blocks: List<Block>) {
 }
 
 data class Block(val id: Long?, val size: Long, val type: Type) {
+    fun fitsIn(targetBlock: Block): Boolean {
+        return targetBlock.type == Block.Type.EMPTY_SPACE && targetBlock.size >= size
+    }
+
+    fun replaceWith(replacement: Block) = listOf(
+         replacement,
+         copy(size = size - replacement.size)
+    ).filter { it.size > 0  }
+
     enum class Type{
         FILE,
         EMPTY_SPACE

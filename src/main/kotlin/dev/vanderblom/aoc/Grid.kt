@@ -26,7 +26,7 @@ class Grid(private val input: List<String>) {
         return input[coord]
     }
 
-    fun getSurrounding(index: Coord, n: Int): Surrounding {
+    fun getSurrounding(index: Coord, n: Int, includeSelf: Boolean = true): Surrounding {
         val (row, col) = index
 
         require(row >= 0 && col >= 0) { "row and col should be greater than zero" }
@@ -38,7 +38,8 @@ class Grid(private val input: List<String>) {
         val canLookLeft = col - n >= 0
         val canLookUp = row - n >= 0
 
-        val indices = (0..n)
+        val startIndex = if(includeSelf) 0 else 1
+        val indices = (startIndex..n)
         return Surrounding.of(
             index,
             input[index]!!,
