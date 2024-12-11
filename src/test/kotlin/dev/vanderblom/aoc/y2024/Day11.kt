@@ -1,4 +1,4 @@
-package dev.vanderblom.aoc.days
+package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
 import org.assertj.core.api.Assertions.assertThat
@@ -61,8 +61,7 @@ class Day11 : AbstractDay() {
         repeat(n) {
             currentStoneCounts
                 .toMap() // Creates a copy of the currentStoneCounts
-                .entries
-                .map { (oldStoneValue, oldStoneCount) ->
+                .forEach { (oldStoneValue, oldStoneCount) ->
                     currentStoneCounts[oldStoneValue] = currentStoneCounts[oldStoneValue]!! - oldStoneCount
                     if (currentStoneCounts[oldStoneValue] == 0L) currentStoneCounts.remove(oldStoneValue)
 

@@ -5,8 +5,8 @@ import java.nio.file.Path
 import java.security.MessageDigest
 import java.util.function.Function
 
-fun readInput(name: String): List<String> {
-    val file = Path.of("src", "test", "resources", "input", "$name.txt").toFile()
+fun readInput(name: String, year: Int): List<String> {
+    val file = Path.of("src", "test", "resources", "input", year.toString(), "$name.txt").toFile()
     file.createNewFile()
     return file.readLines()
 }

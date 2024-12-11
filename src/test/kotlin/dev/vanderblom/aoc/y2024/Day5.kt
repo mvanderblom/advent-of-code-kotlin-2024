@@ -1,4 +1,4 @@
-package dev.vanderblom.aoc.days
+package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
 import dev.vanderblom.aoc.firstOrNullIndexed

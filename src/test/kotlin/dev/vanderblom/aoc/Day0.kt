@@ -1,53 +1,44 @@
-package dev.vanderblom.aoc.days
+package dev.vanderblom.aoc
 
-import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.Grid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
-class Day4 : AbstractDay() {
+class Day0 : AbstractDay() {
 
     @Test
     @Order(1)
     fun `part one - example`() {
         assertThat(partOne(exampleInput))
-            .isEqualTo(18)
+            .isEqualTo(1)
     }
 
     @Test
     @Order(2)
     fun `part one - actual`() {
         assertThat(partOne(actualInput))
-            .isEqualTo(2483)
+            .isEqualTo(1)
     }
 
     @Test
     @Order(3)
     fun `part two - example`() {
         assertThat(partTwo(exampleInput))
-            .isEqualTo(9)
+            .isEqualTo(1)
     }
 
     @Test
     @Order(4)
     fun `part two - actual`() {
         assertThat(partTwo(actualInput))
-            .isEqualTo(1925)
+            .isEqualTo(1)
     }
 
     private fun partOne(input: List<String>): Int {
-        val grid = Grid(input)
-        return grid.findAll('X')
-            .map { grid.getSurrounding(it, 3) }
-            .sumOf { it.all().count { str -> str == "XMAS" } }
+        return 1
     }
 
     private fun partTwo(input: List<String>): Int {
-        val grid = Grid(input)
-        return grid.findAll('A')
-            .map { grid.getSurrounding(it, 1) }
-            .count { it.diagonals().all { str -> str == "MAS" || str == "SAM"  } }
+        return 1
     }
 }
-
