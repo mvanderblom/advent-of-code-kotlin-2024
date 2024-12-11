@@ -1,7 +1,6 @@
 package dev.vanderblom.aoc.days
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.showMe
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -26,62 +25,63 @@ class Day11 : AbstractDay() {
     @Test
     @Order(3)
     fun `part two - example`() {
-        assertThat(partTwo(exampleInput[0]))
-            .isEqualTo(1)
+        assertThat(partTwo(exampleInput[0], 25))
+            .isEqualTo(55312)
     }
 
     @Test
     @Order(4)
     fun `part two - actual`() {
         assertThat(partTwo(actualInput[0]))
-            .isEqualTo(1)
+            .isEqualTo(220566831337810L)
     }
 
-    private fun partOne(input: String) = input
+    private fun partOne(input: String, n: Int = 25) = input
         .split(" ")
-        .map { Stone(it.toLong()) }
         .let {
             var actualStoneList = it
-            repeat(25 ) {iteration ->
+            repeat(n) {
                 actualStoneList = actualStoneList
                     .flatMap { stone ->
                         stone.morph()
-                    }.showMe{"number of stones after $iteration: " + it.size}
+                    }
             }
             actualStoneList
-        }.size
+        }
+        .size
 
+    private fun partTwo(input: String, n: Int = 75): Long {
+        val currentStoneCounts = input
+            .split(" ")
+            .groupingBy { it }
+            .eachCount()
+            .mapValues { (_, count) -> count.toLong() }
+            .toMutableMap()
 
+        repeat(n) {
+            currentStoneCounts
+                .toMap() // Creates a copy of the currentStoneCounts
+                .entries
+                .map { (oldStoneValue, oldStoneCount) ->
+                    currentStoneCounts[oldStoneValue] = currentStoneCounts[oldStoneValue]!! - oldStoneCount
+                    if (currentStoneCounts[oldStoneValue] == 0L) currentStoneCounts.remove(oldStoneValue)
 
-    private fun partTwo(input: String): Int {
-        return 1
+                    oldStoneValue
+                        .morph()
+                        .forEach { newValue ->
+                            currentStoneCounts.compute(newValue, { _, count -> count?.plus(oldStoneCount) ?: oldStoneCount })
+                        }
+                }
+        }
+        return currentStoneCounts.values.sum()
     }
 }
 
-fun List<Stone>.showMe(): List<Stone> {
-    this.map { it.value }.joinToString(" ")
-    return this
+fun String.morph(): List<String> {
+    if (this == "0") return listOf("1")
+    if (length % 2 == 0) return listOf(
+        substring(0, length / 2),
+        substring(length / 2, length).toLong().toString()
+    )
+    return listOf((toLong() * 2024L).toString())
 }
-
-data class Stone(val value: Long) {
-    fun morph(): List<Stone> {
-        if(value == 0L) return listOf(Stone(1L))
-        val stringValue = value.toString()
-        if(stringValue.length % 2 == 0 ) return listOf(
-            Stone(stringValue.substring(0, stringValue.length / 2).toLong()),
-            Stone(stringValue.substring(stringValue.length / 2, stringValue.length).toLong())
-        )
-        return listOf(Stone(value * 2024L))
-    }
-}
-//expected: 1 2024 1 0 9 9 2021976
-//actual  : 1 2024 1 0 9 9 2021976
-/**
- * If the stone is engraved with the number 0,
- *  it is replaced by a stone engraved with the number 1.
- * If the stone is engraved with a number that has an even number of digits,
- *  it is replaced by two stones. The left half of the digits are engraved on the new left stone, and the right half of the digits are engraved on the new right stone. (The new numbers don't keep extra leading zeroes: 1000 would become stones 10 and 0.)
- * If none of the other rules apply,
- *  the stone is replaced by a new stone;
- *  the old stone's number multiplied by 2024 is engraved on the new stone.
- */
