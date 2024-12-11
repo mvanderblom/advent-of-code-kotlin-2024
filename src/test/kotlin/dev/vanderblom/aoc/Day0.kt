@@ -10,28 +10,28 @@ class Day0 : AbstractDay() {
     @Order(1)
     fun `part one - example`() {
         assertThat(partOne(exampleInput))
-            .isEqualTo(1)
+            .isEqualTo(exampleInput.size)
     }
 
     @Test
     @Order(2)
     fun `part one - actual`() {
         assertThat(partOne(actualInput))
-            .isEqualTo(1)
+            .isEqualTo(actualInput.size)
     }
 
     @Test
     @Order(3)
     fun `part two - example`() {
         assertThat(partTwo(exampleInput))
-            .isEqualTo(1)
+            .isEqualTo(exampleInput.size)
     }
 
     @Test
     @Order(4)
     fun `part two - actual`() {
         assertThat(partTwo(actualInput))
-            .isEqualTo(1)
+            .isEqualTo(actualInput.size)
     }
 
     private fun partOne(input: List<String>): Int {
