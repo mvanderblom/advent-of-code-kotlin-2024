@@ -52,9 +52,9 @@ class Day12 : AbstractDay() {
             row.withIndex().forEach { (charIndex, char) ->
                 val coord = Coord(rowIndex, charIndex)
 
-                if (groupsByChar.none { (_, groupCoords) -> groupCoords.contains(coord) }) {
-                    val group = this.buildGroup(coord, setOf(coord))
-                    groupsByChar.add(char to group)
+                val coordNotInExistingGroup = groupsByChar.none { (_, groupCoords) -> groupCoords.contains(coord) }
+                if (coordNotInExistingGroup) {
+                    groupsByChar.add(char to buildGroup(coord, setOf(coord)))
                 }
             }
         }
