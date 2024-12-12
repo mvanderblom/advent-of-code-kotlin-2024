@@ -92,11 +92,12 @@ class Day12 : AbstractDay() {
         return combinedEdges.size
     }
 
-    private fun combineSides(edge: Edge, combinedEdges: MutableSet<Edge>, block: (Coord) -> Coord) {
-        var e = Edge(block.invoke(edge.coord), edge.orientation)
-        while (combinedEdges.contains(e)) {
-            combinedEdges.remove(e)
-            e = Edge(block.invoke(e.coord), edge.orientation)
+    private fun combineSides(edge: Edge, combinedEdges: MutableSet<Edge>, getNeighbour: (Coord) -> Coord) {
+        var neighbouringEdge = Edge(getNeighbour(edge.coord), edge.orientation)
+
+        while (combinedEdges.contains(neighbouringEdge)) {
+            combinedEdges.remove(neighbouringEdge)
+            neighbouringEdge = Edge(getNeighbour(neighbouringEdge.coord), edge.orientation)
         }
     }
 
