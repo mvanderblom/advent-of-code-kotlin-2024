@@ -26,8 +26,8 @@ class Grid(private val input: List<String>) {
         return input[coord]
     }
 
-    fun getSurrounding(index: Coord, n: Int, includeSelf: Boolean = true): Surrounding {
-        val (row, col) = index
+    fun getSurrounding(coord: Coord, n: Int, includeSelf: Boolean = true): Surrounding {
+        val (row, col) = coord
 
         require(row >= 0 && col >= 0) { "row and col should be greater than zero" }
         require(row < height) { "row cannot be greater than ${height - 1}" }
@@ -41,8 +41,8 @@ class Grid(private val input: List<String>) {
         val startIndex = if(includeSelf) 0 else 1
         val indices = (startIndex..n)
         return Surrounding.of(
-            index,
-            input[index]!!,
+            coord,
+            input[coord]!!,
             if (canLookUp) indices.map { input[row - it][col] } else null,
             if (canLookRight) indices.map { input[row][col + it] } else null,
             if (canLookDown) indices.map { input[row + it][col] } else null,
@@ -79,11 +79,18 @@ class Grid(private val input: List<String>) {
             }
             .groupBy ({ it.first }, { it.second } )
 
+    fun toList() = input.flatMapIndexed{ rowIndex, line ->
+        line.mapIndexed { colIndex, char ->
+            Pair(Coord(rowIndex, colIndex), char)
+        }
+    }
+
     fun showMe(): Grid {
         repeat(width) { print("-") }
         println()
         input.forEach(::println)
         return this
     }
+
 }
 
