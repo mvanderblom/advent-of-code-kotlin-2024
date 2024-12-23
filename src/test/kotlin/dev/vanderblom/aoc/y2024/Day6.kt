@@ -1,8 +1,8 @@
 package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
+import dev.vanderblom.aoc.DataGrid
 import dev.vanderblom.aoc.Direction
-import dev.vanderblom.aoc.Grid
 import dev.vanderblom.aoc.Pawn
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
@@ -41,7 +41,7 @@ class Day6 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
 
         val guard = Pawn.of(grid.findSingle(GUARD_START_CHAR))
         guard.canWalkOffGrid(grid)
@@ -50,7 +50,7 @@ class Day6 : AbstractDay() {
     }
 
     private fun partTwo(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
         val guardStartPos = grid.findSingle(GUARD_START_CHAR)
 
         val guard = Pawn.of(guardStartPos)
@@ -68,7 +68,7 @@ class Day6 : AbstractDay() {
             }
     }
 
-    private fun Pawn.canWalkOffGrid(grid: Grid): Boolean {
+    private fun Pawn.canWalkOffGrid(grid: DataGrid): Boolean {
         while (true) {
             when (grid[look(Direction.FORWARD)]) {
                 in listOf('#', 'O') -> turn(Direction.RIGHT)

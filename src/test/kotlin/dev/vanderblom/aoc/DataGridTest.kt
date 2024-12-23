@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class GridTest {
-    val testGrid = Grid(listOf(
+class DataGridTest {
+    val testGrid = DataGrid(listOf(
         "XOX",
         "OXO",
         "XOX"
@@ -89,7 +89,7 @@ class GridTest {
 
     @Test
     fun `surrounding diagonals finds diagonals from topleft left to right`() {
-        val testGrid = Grid(listOf(
+        val testGrid = DataGrid(listOf(
             "H...O",
             ".E.L.",
             "..L..",
@@ -105,7 +105,7 @@ class GridTest {
     @Test
     fun `invalid grid throws`() {
         assertThrows<IllegalArgumentException> {
-            Grid(listOf(
+            DataGrid(listOf(
                 "123",
                 "12",
                 "123",

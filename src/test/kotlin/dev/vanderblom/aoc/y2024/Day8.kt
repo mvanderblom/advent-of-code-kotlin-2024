@@ -1,7 +1,7 @@
 package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.Grid
+import dev.vanderblom.aoc.DataGrid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -37,7 +37,7 @@ class Day8 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        return Grid(input)
+        return DataGrid(input)
             .coordsByChar()
             .asSequence()
             .filter { (k, _) -> k.isLetterOrDigit() }
@@ -52,11 +52,11 @@ class Day8 : AbstractDay() {
                 }
             }
             .distinct()
-            .count { it.isWithIn(Grid(input)) }
+            .count { it.isWithIn(DataGrid(input)) }
     }
 
     private fun partTwo(input: List<String>): Int {
-        return Grid(input)
+        return DataGrid(input)
             .coordsByChar()
             .asSequence()
             .filter { (k, _) -> k.isLetterOrDigit() }
@@ -72,7 +72,7 @@ class Day8 : AbstractDay() {
                             var i = 1
                             while (true) {
                                 val newHarmonic = coordA + (delta * i++)
-                                if (!newHarmonic.isWithIn(Grid(input))) {
+                                if (!newHarmonic.isWithIn(DataGrid(input))) {
                                     break;
                                 }
 
@@ -82,7 +82,7 @@ class Day8 : AbstractDay() {
                             var j = 1
                             while (true) {
                                 val newHarmonic = coordB - (delta * j++)
-                                if (!newHarmonic.isWithIn(Grid(input))) {
+                                if (!newHarmonic.isWithIn(DataGrid(input))) {
                                     break;
                                 }
                                 harmonics.add(newHarmonic)

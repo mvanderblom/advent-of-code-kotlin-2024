@@ -1,7 +1,7 @@
 package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.Grid
+import dev.vanderblom.aoc.DataGrid
 import dev.vanderblom.aoc.Orientation
 import dev.vanderblom.aoc.Pawn
 import org.assertj.core.api.Assertions.assertThat
@@ -39,7 +39,7 @@ class Day10 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
 
         val trailHeadScores = grid.findAll('0').map {start ->
             val acc = mutableListOf<Pawn>()
@@ -53,7 +53,7 @@ class Day10 : AbstractDay() {
             .sum()
     }
 
-    private fun walk(pawn: Pawn, grid: Grid, acc: MutableList<Pawn>) {
+    private fun walk(pawn: Pawn, grid: DataGrid, acc: MutableList<Pawn>) {
         if(grid[pawn.position] == '9') {
             acc.add(pawn)
             return
@@ -77,7 +77,7 @@ class Day10 : AbstractDay() {
     }
 
     private fun partTwo(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
 
         val trailHeadScores = grid.findAll('0').map {start ->
             val acc = mutableListOf<Pawn>()

@@ -123,13 +123,14 @@ class Day12 : AbstractDay() {
     private fun List<String>.containsCoord(coord: Coord): Boolean {
         return coord.row >= 0 && coord.col >= 0 && coord.row < size && coord.col < first().length
     }
-}
 
-data class Edge(val coord: Coord, val orientation: Orientation) {
-    enum class Orientation {
-        BOTTOM_TO_TOP,
-        TOP_TO_BOTTOM,
-        LEFT_TO_RIGHT,
-        RIGHT_TO_LEFT
+    private data class Edge(val coord: Coord, val orientation: Orientation) {
+        enum class Orientation {
+            BOTTOM_TO_TOP,
+            TOP_TO_BOTTOM,
+            LEFT_TO_RIGHT,
+            RIGHT_TO_LEFT
+        }
     }
 }
+

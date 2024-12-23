@@ -74,13 +74,14 @@ class Day11 : AbstractDay() {
         }
         return currentStoneCounts.values.sum()
     }
+
+    private fun String.morph(): List<String> {
+        if (this == "0") return listOf("1")
+        if (length % 2 == 0) return listOf(
+            substring(0, length / 2),
+            substring(length / 2, length).toLong().toString()
+        )
+        return listOf((toLong() * 2024L).toString())
+    }
 }
 
-fun String.morph(): List<String> {
-    if (this == "0") return listOf("1")
-    if (length % 2 == 0) return listOf(
-        substring(0, length / 2),
-        substring(length / 2, length).toLong().toString()
-    )
-    return listOf((toLong() * 2024L).toString())
-}

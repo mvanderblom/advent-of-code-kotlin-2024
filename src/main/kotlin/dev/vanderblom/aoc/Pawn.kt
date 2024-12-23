@@ -36,7 +36,7 @@ data class Pawn(var row: Int, var col: Int, var orientation: Orientation = Orien
         }
     }
 
-    fun isOn(grid: Grid) = col < grid.width && row < grid.height && col >= 0 && row >= 0
+    fun isOn(grid: DataGrid) = col < grid.width && row < grid.height && col >= 0 && row >= 0
 
     fun clone(): Pawn {
         return Pawn(row, col, orientation, path.toMutableList())

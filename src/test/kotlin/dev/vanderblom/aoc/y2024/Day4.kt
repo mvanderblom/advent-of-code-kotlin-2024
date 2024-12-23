@@ -1,7 +1,7 @@
 package dev.vanderblom.aoc.y2024
 
 import dev.vanderblom.aoc.AbstractDay
-import dev.vanderblom.aoc.Grid
+import dev.vanderblom.aoc.DataGrid
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -37,14 +37,14 @@ class Day4 : AbstractDay() {
     }
 
     private fun partOne(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
         return grid.findAll('X')
             .map { grid.getSurrounding(it, 3) }
             .sumOf { it.all().count { str -> str == "XMAS" } }
     }
 
     private fun partTwo(input: List<String>): Int {
-        val grid = Grid(input)
+        val grid = DataGrid(input)
         return grid.findAll('A')
             .map { grid.getSurrounding(it, 1) }
             .count { it.diagonals().all { str -> str == "MAS" || str == "SAM"  } }

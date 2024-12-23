@@ -12,9 +12,11 @@ data class Coord(val row: Int, val col: Int) {
     fun left() = Coord(row, col - 1)
     fun right() = Coord(row, col + 1)
 
-    fun isWithIn(grid: Grid) =
+    fun isWithIn(grid: DataGrid) =
         this.row >= 0 && this.col >= 0
                 && this.row < grid.height
                 && this.col < grid.width
+
+    fun withIn(grid: Grid) = Coord((row + grid.height) % grid.height, (col + grid.width) % grid.width)
 
 }
