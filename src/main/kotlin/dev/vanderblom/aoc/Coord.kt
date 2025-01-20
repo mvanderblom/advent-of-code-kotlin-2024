@@ -20,3 +20,11 @@ data class Coord(val row: Int, val col: Int) {
     fun withIn(grid: Grid) = Coord((row + grid.height) % grid.height, (col + grid.width) % grid.width)
 
 }
+
+fun Char.toMove() = when (this) {
+    '^' -> Coord::up
+    '>' -> Coord::right
+    'v' -> Coord::down
+    '<' -> Coord::left
+    else -> throw IllegalArgumentException("unkown move $this")
+}

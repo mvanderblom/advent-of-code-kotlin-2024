@@ -1,6 +1,6 @@
 package dev.vanderblom.aoc
 
-class DataGrid(private val input: List<String>) {
+class DataGrid(val input: List<String>) {
 
     val width: Int = input.map { it.length }.distinct().single()
     val height: Int = input.size
